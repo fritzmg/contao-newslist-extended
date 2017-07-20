@@ -47,8 +47,34 @@ class NewslistExtended
 	 */
 	public function parseArticles($objTemplate, $arrArticle, $objModule)
 	{
+		// check if the source is "default"
+		if ('default' != $arrArticle['source'])
+		{
+			return;
+		}
+
+		// check if this is the newsreader
+		if ($objModule->type == 'newsreader')
+		{
+			// get the current uri
+			$strCurrentUri = \Environment::get('uri');
+
+			// get the canonical uri
+			$strCanonicalUri = (strpos($objTemplate->link, 'http') !== 0 ? \Environment::get('base') : '') . $objTemplate->link;
+
+			// check if Uris are the same
+			if ($strCurrentUri != $strCanonicalUri)
+			{
+				// insert canonical tag
+				$GLOBALS['TL_HEAD'][] = '<link rel="canonical" href="'.$strCanonicalUri.'">';
+			}
+
+			// don't do anything else
+			return;
+		}
+
 		// check if override is active and only override for default articles
-		if (!$objModule->news_overrideRedirect && 'default' != $arrArticle['source'])
+		if (!$objModule->news_overrideRedirect)
 		{
 			return;
 		}
