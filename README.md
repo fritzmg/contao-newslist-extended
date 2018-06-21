@@ -5,7 +5,7 @@
 Contao Newslist Extended
 =====================
 
-Contao extension add a few more features to the news list module.
+Contao extension to add a few more features to the news list module.
 
 ### Override redirect page
 
