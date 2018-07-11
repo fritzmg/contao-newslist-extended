@@ -16,3 +16,8 @@
  * Hooks
  */
 $GLOBALS['TL_HOOKS']['parseArticles'][] = array('NewslistExtended\NewslistExtended','parseArticles');
+
+/**
+ * Frontend modules
+ */
+$GLOBALS['FE_MOD']['news']['newslist'] = \NewslistExtended\ModuleNewsList::class;

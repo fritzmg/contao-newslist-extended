@@ -14,7 +14,9 @@
 
 namespace NewslistExtended;
 
-if (class_exists('\NewsCategories\ModuleNewsList')) {
+if (class_exists('\Codefog\NewsCategoriesBundle\FrontendModule\NewsListModule')) {
+	class ParentModuleNewsList extends \Codefog\NewsCategoriesBundle\FrontendModule\NewsListModule {}
+} elseif (class_exists('\NewsCategories\ModuleNewsList')) {
     class ParentModuleNewsList extends \NewsCategories\ModuleNewsList {}
 } else {
     class ParentModuleNewsList extends \Contao\ModuleNewsList {}
