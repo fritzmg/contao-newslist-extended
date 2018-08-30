@@ -83,7 +83,7 @@ class NewslistExtended
 		global $objPage;
 
 		// check if a custom redirect page is set
-		if ($arrArticle['jumpTo'] && null !== ($objTarget = \PageModel::findById($arrArticle['jumpTo'])))
+		if ($objModule->jumpTo && null !== ($objTarget = \PageModel::findById($objModule->jumpTo)))
 		{
 			// override the target page
 			$objPage = $objTarget;
