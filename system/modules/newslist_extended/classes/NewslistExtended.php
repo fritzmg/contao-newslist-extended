@@ -73,31 +73,22 @@ class NewslistExtended
 			return;
 		}
 
-		// check if override is active and only override for default articles
-		if (!$objModule->news_overrideRedirect)
+		// check if a custom redirect page is set and the article has no redirects on its own
+		if ('default' === $arrArticle['source']
+		 && $objModule->news_overrideRedirect 
+		 && $objModule->jumpTo 
+		 && null !== ($objTarget = \PageModel::findById($objModule->jumpTo)))
 		{
-			return;
+			// build the href
+			$strHref = \Controller::generateFrontendUrl($objTarget->row(), ((\Config::get('useAutoItem') && !\Config::get('disableAlias')) ?  '/' : '/items/') . ((!\Config::get('disableAlias') && $arrArticle['alias'] != '') ? $arrArticle['alias'] : $arrArticle['id']), $objTarget->rootLanguage, true);
+
+			// encode href
+			$strHref = ampersand($strHref);
+
+			// update links
+			$objTemplate->link = $strHref;
+			$objTemplate->linkHeadline = $this->generateNewsLink( $strHref, $arrArticle['headline'], $arrArticle['headline']);
+			$objTemplate->more = $this->generateNewsLink( $strHref, $arrArticle['headline'], $GLOBALS['TL_LANG']['MSC']['more'], true);
 		}
-
-		// get current page object
-		global $objPage;
-
-		// check if a custom redirect page is set
-		if ($objModule->jumpTo && null !== ($objTarget = \PageModel::findById($objModule->jumpTo)))
-		{
-			// override the target page
-			$objPage = $objTarget;
-		}
-
-		// build the href
-		$strHref = \Controller::generateFrontendUrl($objPage->row(), ((\Config::get('useAutoItem') && !\Config::get('disableAlias')) ?  '/' : '/items/') . ((!\Config::get('disableAlias') && $arrArticle['alias'] != '') ? $arrArticle['alias'] : $arrArticle['id']), $objPage->rootLanguage, true);
-
-		// encode href
-		$strHref = ampersand($strHref);
-
-		// update links
-		$objTemplate->link = $strHref;
-		$objTemplate->linkHeadline = $this->generateNewsLink( $strHref, $arrArticle['headline'], $arrArticle['headline']);
-		$objTemplate->more = $this->generateNewsLink( $strHref, $arrArticle['headline'], $GLOBALS['TL_LANG']['MSC']['more'], true);
 	}
 }
