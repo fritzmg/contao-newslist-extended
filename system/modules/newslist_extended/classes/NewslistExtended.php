@@ -30,7 +30,7 @@ class NewslistExtended
 	{
 		return sprintf('<a href="%s" title="%s" itemprop="url">%s%s</a>',
 							$strHref,
-							\StringUtil::specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['readMore'], $objArticle->headline), true),
+							specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['readMore'], $objArticle->headline), true),
 							$strText,
 							($blnIsReadMore ? ' <span class="invisible">'.$strTitle.'</span>' : ''));
 	}
