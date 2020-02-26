@@ -3,7 +3,7 @@
     "description": "Contao extension to add a few more features to the news list.",
     "keywords": ["contao", "news", "list"],
     "type": "contao-module",
-    "homepage": "https://www.inspiredminds.at",
+    "homepage": "https://github.com/fritzmg/contao-newslist-extended",
     "license": "LGPL-3.0-or-later",
     "authors": [
         {
