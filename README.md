@@ -14,8 +14,3 @@ This enables you to define a redirect page other than the one defined in the new
 ### News reader module
 
 This enables you to define a news reader module, just like in the news archive module. As usual, the defined news reader module will be displayed in place of the news list module, if the redirect page of a news entry points to the same page where the news list module is located.
-
-_Note:_ if you use the `codefog/contao-news_categories` extension in version `>=3.0` then you currently have to add the following to your `app/Resources/contao/config/config.php`:
-```php
-$GLOBALS['FE_MOD']['news']['newslist'] = \NewslistExtended\ModuleNewsList::class;
-```
