@@ -11,13 +11,17 @@
  * @copyright Fritz Michael Gschwantner 2017
  */
 
+use NewslistExtended\ModuleNewsList;
+use NewslistExtended\NewslistExtended;
 
 /**
  * Hooks
  */
-$GLOBALS['TL_HOOKS']['parseArticles'][] = array('NewslistExtended\NewslistExtended','parseArticles');
+$GLOBALS['TL_HOOKS']['parseArticles'][] = [NewslistExtended::class, 'parseArticles'];
 
 /**
  * Frontend modules
  */
-$GLOBALS['FE_MOD']['news']['newslist'] = \NewslistExtended\ModuleNewsList::class;
+if (NewslistExtended::addNewsReader()) {
+    $GLOBALS['FE_MOD']['news']['newslist'] = ModuleNewsList::class;
+}

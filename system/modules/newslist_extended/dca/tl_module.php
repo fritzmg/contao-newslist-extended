@@ -13,7 +13,12 @@
 
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'news_overrideRedirect';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['newslist'] = str_replace(';{template_legend', ',news_readerModule;{redirect_legend},news_overrideRedirect;{template_legend', $GLOBALS['TL_DCA']['tl_module']['palettes']['newslist']);
+
+if (stripos($GLOBALS['TL_DCA']['tl_module']['palettes']['newslist'], ',news_readerModule,') === false) {
+    $GLOBALS['TL_DCA']['tl_module']['palettes']['newslist'] = str_replace(';{template_legend', ',news_readerModule;{template_legend', $GLOBALS['TL_DCA']['tl_module']['palettes']['newslist']);
+}
+
+$GLOBALS['TL_DCA']['tl_module']['palettes']['newslist'] = str_replace(';{template_legend', ';{redirect_legend},news_overrideRedirect;{template_legend', $GLOBALS['TL_DCA']['tl_module']['palettes']['newslist']);
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['news_overrideRedirect'] = 'jumpTo';
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['news_overrideRedirect'] = array

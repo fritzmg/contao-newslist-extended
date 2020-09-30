@@ -14,6 +14,13 @@
 
 namespace NewslistExtended;
 
+use Contao\Config;
+use Contao\Controller;
+use Contao\CoreBundle\ContaoCoreBundle;
+use Contao\Environment;
+use Contao\PageModel;
+use Jean85\PrettyVersions;
+
 class NewslistExtended
 {
 	/**
@@ -57,10 +64,10 @@ class NewslistExtended
 		if ($objModule->type == 'newsreader')
 		{
 			// get the current uri
-			$strCurrentUri = \Environment::get('uri');
+			$strCurrentUri = Environment::get('uri');
 
 			// get the canonical uri
-			$strCanonicalUri = (strpos($objTemplate->link, 'http') !== 0 ? \Environment::get('base') : '') . $objTemplate->link;
+			$strCanonicalUri = (strpos($objTemplate->link, 'http') !== 0 ? Environment::get('base') : '') . $objTemplate->link;
 
 			// check if Uris are the same
 			if ($strCurrentUri != $strCanonicalUri)
@@ -77,10 +84,10 @@ class NewslistExtended
 		if ('default' === $arrArticle['source']
 		 && $objModule->news_overrideRedirect 
 		 && $objModule->jumpTo 
-		 && null !== ($objTarget = \PageModel::findById($objModule->jumpTo)))
+		 && null !== ($objTarget = PageModel::findById($objModule->jumpTo)))
 		{
 			// build the href
-			$strHref = \Controller::generateFrontendUrl($objTarget->row(), ((\Config::get('useAutoItem') && !\Config::get('disableAlias')) ?  '/' : '/items/') . ((!\Config::get('disableAlias') && $arrArticle['alias'] != '') ? $arrArticle['alias'] : $arrArticle['id']), $objTarget->rootLanguage, true);
+			$strHref = Controller::generateFrontendUrl($objTarget->row(), ((Config::get('useAutoItem') && !Config::get('disableAlias')) ?  '/' : '/items/') . ((!Config::get('disableAlias') && $arrArticle['alias'] != '') ? $arrArticle['alias'] : $arrArticle['id']), $objTarget->rootLanguage, true);
 
 			// encode href
 			$strHref = ampersand($strHref);
@@ -90,5 +97,23 @@ class NewslistExtended
 			$objTemplate->linkHeadline = $this->generateNewsLink( $strHref, $arrArticle['headline'], $arrArticle['headline']);
 			$objTemplate->more = $this->generateNewsLink( $strHref, $arrArticle['headline'], $GLOBALS['TL_LANG']['MSC']['more'], true);
 		}
+	}
+
+	/**
+	 * Checks whether to add the newsreader feature.
+	 */
+	public static function addNewsReader(): bool
+	{
+		if (!class_exists(ContaoCoreBundle::class)) {
+			return true;
+		}
+
+		try {
+			$contaoVersion = PrettyVersions::getVersion('contao/core-bundle');
+		} catch (\OutOfBoundsException $e) {
+			$contaoVersion = PrettyVersions::getVersion('contao/contao');
+		}
+ 
+		return version_compare($contaoVersion->getShortVersion(), '4.7.0', '<');
 	}
 }

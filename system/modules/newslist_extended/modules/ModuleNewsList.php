@@ -14,6 +14,9 @@
 
 namespace NewslistExtended;
 
+use Contao\Config;
+use Contao\Controller;
+
 if (class_exists('\Codefog\NewsCategoriesBundle\FrontendModule\NewsListModule')) {
 	class ParentModuleNewsList extends \Codefog\NewsCategoriesBundle\FrontendModule\NewsListModule {}
 } elseif (class_exists('\NewsCategories\ModuleNewsList')) {
@@ -37,9 +40,9 @@ class ModuleNewsList extends ParentModuleNewsList
 		}
 
 		// Show the news reader if an item has been selected
-		if ($this->news_readerModule > 0 && (isset($_GET['items']) || (\Config::get('useAutoItem') && isset($_GET['auto_item']))))
+		if ($this->news_readerModule > 0 && (isset($_GET['items']) || (Config::get('useAutoItem') && isset($_GET['auto_item']))))
 		{
-			return \Controller::getFrontendModule($this->news_readerModule, $this->strColumn);
+			return Controller::getFrontendModule($this->news_readerModule, $this->strColumn);
 		}
 
 		return parent::generate();

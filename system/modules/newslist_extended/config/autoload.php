@@ -11,6 +11,7 @@
  * @copyright Fritz Michael Gschwantner 2017
  */
 
+use Contao\ClassLoader;
 
 /**
  * Register the namespace
