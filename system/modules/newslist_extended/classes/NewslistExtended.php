@@ -93,6 +93,11 @@ class NewslistExtended
 			$strHref = ampersand($strHref);
 
 			// update links
+			if (!$arrArticle['fullsize']) {
+				$objTemplate->href = $strHref;
+				$objTemplate->imageHref = $strHref;
+			}
+			
 			$objTemplate->link = $strHref;
 			$objTemplate->linkHeadline = $this->generateNewsLink( $strHref, $arrArticle['headline'], $arrArticle['headline']);
 			$objTemplate->more = $this->generateNewsLink( $strHref, $arrArticle['headline'], $GLOBALS['TL_LANG']['MSC']['more'], true);
