@@ -19,6 +19,7 @@ if (stripos($GLOBALS['TL_DCA']['tl_module']['palettes']['newslist'], ',news_read
 }
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['newslist'] = str_replace(';{template_legend', ';{redirect_legend},news_overrideRedirect;{template_legend', $GLOBALS['TL_DCA']['tl_module']['palettes']['newslist']);
+$GLOBALS['TL_DCA']['tl_module']['palettes']['newsarchive'] = str_replace(';{template_legend', ';{redirect_legend},news_overrideRedirect;{template_legend', $GLOBALS['TL_DCA']['tl_module']['palettes']['newsarchive']);
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['news_overrideRedirect'] = 'jumpTo';
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['news_overrideRedirect'] = array

@@ -14,11 +14,12 @@
 
 namespace NewslistExtended;
 
+use Composer\Semver\Semver;
 use Contao\Config;
 use Contao\Controller;
-use Contao\CoreBundle\ContaoCoreBundle;
 use Contao\Environment;
 use Contao\PageModel;
+use Jean85\Exception\ReplacedPackageException;
 use Jean85\PrettyVersions;
 
 class NewslistExtended
@@ -97,7 +98,7 @@ class NewslistExtended
 				$objTemplate->href = $strHref;
 				$objTemplate->imageHref = $strHref;
 			}
-			
+
 			$objTemplate->link = $strHref;
 			$objTemplate->linkHeadline = $this->generateNewsLink( $strHref, $arrArticle['headline'], $arrArticle['headline']);
 			$objTemplate->more = $this->generateNewsLink( $strHref, $arrArticle['headline'], $GLOBALS['TL_LANG']['MSC']['more'], true);
@@ -109,16 +110,18 @@ class NewslistExtended
 	 */
 	public static function addNewsReader(): bool
 	{
-		if (!class_exists(ContaoCoreBundle::class)) {
-			return true;
+		try {
+			$version = PrettyVersions::getVersion('contao/core-bundle');
+
+			if ('' === $version->getShortVersion()) {
+				$version = PrettyVersions::getVersion('contao/contao');
+			}
+		} catch (ReplacedPackageException $e) {
+			$version = PrettyVersions::getVersion('contao/contao');
+		} catch (\OutOfBoundsException $e) {
+			$version = PrettyVersions::getVersion('contao/contao');
 		}
 
-		try {
-			$contaoVersion = PrettyVersions::getVersion('contao/core-bundle');
-		} catch (\OutOfBoundsException $e) {
-			$contaoVersion = PrettyVersions::getVersion('contao/contao');
-		}
- 
-		return version_compare($contaoVersion->getShortVersion(), '4.7.0', '<');
+		return Semver::satisfies($version->getShortVersion(), '<4.7');
 	}
 }
