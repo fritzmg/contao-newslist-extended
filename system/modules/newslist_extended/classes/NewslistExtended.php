@@ -150,6 +150,6 @@ class NewslistExtended
 			'size' => $size,
 		];
 
-		Controller::addImageToTemplate($template, $item, null, null, FilesModel::findById($item['singleSRC']));
+		Controller::addImageToTemplate($template, $item, null, null, FilesModel::findById($article['singleSRC']));
 	}
 }
