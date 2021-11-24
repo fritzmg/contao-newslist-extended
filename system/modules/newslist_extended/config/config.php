@@ -18,6 +18,7 @@ use NewslistExtended\NewslistExtended;
  * Hooks
  */
 $GLOBALS['TL_HOOKS']['parseArticles'][] = [NewslistExtended::class, 'parseArticles'];
+$GLOBALS['TL_HOOKS']['parseArticles'][] = [NewslistExtended::class, 'overrideFeaturedImageSize'];
 
 /**
  * Frontend modules

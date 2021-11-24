@@ -18,7 +18,12 @@ use Composer\Semver\Semver;
 use Contao\Config;
 use Contao\Controller;
 use Contao\Environment;
+use Contao\FilesModel;
+use Contao\FrontendTemplate;
+use Contao\Module;
+use Contao\NewsModel;
 use Contao\PageModel;
+use Contao\StringUtil;
 use Jean85\Exception\ReplacedPackageException;
 use Jean85\PrettyVersions;
 
@@ -123,5 +128,28 @@ class NewslistExtended
 		}
 
 		return Semver::satisfies($version->getShortVersion(), '<4.7');
+	}
+
+	/**
+	 * Overrides the image size for featured news.
+	 */
+	public function overrideFeaturedImageSize(FrontendTemplate $template, array $article, Module $module): void
+	{
+		if (!$article['featured'] || !$template->addImage) {
+			return;
+		}
+
+		$size = StringUtil::deserialize($module->imgSize_featured, true);
+
+		if (empty($size)) {
+			return;
+		}
+
+		$item = [
+			'singleSRC' => $template->singleSRC,
+			'size' => $size,
+		];
+
+		Controller::addImageToTemplate($template, $item, null, null, FilesModel::findById($item['singleSRC']));
 	}
 }

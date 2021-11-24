@@ -13,3 +13,4 @@
 
 
 $GLOBALS['TL_LANG']['tl_module']['news_overrideRedirect'] = array('Override redirect page','Overrides the redirect page setting of the news archive. If no redirect page is defined, the current page will be used.');
+$GLOBALS['TL_LANG']['tl_module']['imgSize_featured'] = ['Image size for featured news', 'Overwrites the image size for featured news.'];

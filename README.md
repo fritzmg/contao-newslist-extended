@@ -15,3 +15,7 @@ This enables you to define a redirect page other than the one defined in the new
 This enables you to define a news reader module, just like in the news archive module. As usual, the defined news reader module will be displayed in place of the news list module, if the redirect page of a news entry points to the same page where the news list module is located.
 
 _Note:_ this feature is already present in Contao 4.7 and up.
+
+### Image size for featured news
+
+This allows you to choose a different image size setting in the news modules for featured news (e.g. when featured news should have a larger image).

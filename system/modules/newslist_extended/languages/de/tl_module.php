@@ -13,3 +13,4 @@
 
 
 $GLOBALS['TL_LANG']['tl_module']['news_overrideRedirect'] = array('Weiterleitungsseite überschreiben','Überschreibt die Einstellung der Weiterleitungsseite aus dem jeweiligen Newsarchiv. Falls keine Weiterleitungsseite angegeben wird, wird auf die aktuelle Seite weitergeleitet.');
+$GLOBALS['TL_LANG']['tl_module']['imgSize_featured'] = ['Bildgröße für hervorgehobene Nachrichten', 'Überschreibt die Bildgröße für hervorgehobene Nachrichten.'];

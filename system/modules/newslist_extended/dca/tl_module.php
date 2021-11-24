@@ -11,6 +11,7 @@
  * @copyright Fritz Michael Gschwantner 2017
  */
 
+use Contao\CoreBundle\DataContainer\PaletteManipulator;
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'news_overrideRedirect';
 
@@ -30,3 +31,19 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['news_overrideRedirect'] = array
 	'eval'                    => array('submitOnChange'=>true),
 	'sql'                     => "char(1) NOT NULL default ''"
 );
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['imgSize_featured'] = $GLOBALS['TL_DCA']['tl_module']['fields']['imgSize'];
+$GLOBALS['TL_DCA']['tl_module']['fields']['imgSize_featured']['label'] = &$GLOBALS['TL_LANG']['tl_module']['imgSize_featured'];
+
+if (class_exists(PaletteManipulator::class)) {
+	PaletteManipulator::create()
+		->addField('imgSize_featured', 'imgSize')
+		->applyToPalette('newslist', 'tl_module')
+		->applyToPalette('newsarchive', 'tl_module')
+		->applyToPalette('newsreader', 'tl_module')
+	;
+} else {
+	$GLOBALS['TL_DCA']['tl_module']['palettes']['newslist'] = str_replace(',imgSize;', ',imgSize,imgSize_featured;', $GLOBALS['TL_DCA']['tl_module']['palettes']['newslist']);
+	$GLOBALS['TL_DCA']['tl_module']['palettes']['newsarchive'] = str_replace(',imgSize;', ',imgSize,imgSize_featured;', $GLOBALS['TL_DCA']['tl_module']['palettes']['newsarchive']);
+	$GLOBALS['TL_DCA']['tl_module']['palettes']['newsreader'] = str_replace(',imgSize;', ',imgSize,imgSize_featured;', $GLOBALS['TL_DCA']['tl_module']['palettes']['newsreader']);
+}
