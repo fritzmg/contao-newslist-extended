@@ -141,7 +141,7 @@ class NewslistExtended
 
 		$size = StringUtil::deserialize($module->imgSize_featured, true);
 
-		if (empty($size)) {
+		if (empty(array_filter($size))) {
 			return;
 		}
 
