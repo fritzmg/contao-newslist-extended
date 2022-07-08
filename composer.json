@@ -26,7 +26,7 @@
         }
     ],
     "require": {
-        "php": ">=7.1",
+        "php": ">=7.4",
         "composer/semver": "^1.0 || ^2.0 || ^3.0",
         "contao/core-bundle": "^3.0 || ^4.0",
         "contao-community-alliance/composer-plugin": "^2.4 || ^3.0",

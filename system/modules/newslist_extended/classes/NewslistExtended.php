@@ -17,6 +17,8 @@ namespace NewslistExtended;
 use Composer\Semver\Semver;
 use Contao\Config;
 use Contao\Controller;
+use Contao\CoreBundle\Routing\ResponseContext\HtmlHeadBag\HtmlHeadBag;
+use Contao\CoreBundle\Routing\ResponseContext\ResponseContext;
 use Contao\Environment;
 use Contao\FilesModel;
 use Contao\FrontendTemplate;
@@ -25,6 +27,7 @@ use Contao\News;
 use Contao\NewsModel;
 use Contao\PageModel;
 use Contao\StringUtil;
+use Contao\System;
 use Jean85\Exception\ReplacedPackageException;
 use Jean85\PrettyVersions;
 
@@ -80,8 +83,32 @@ class NewslistExtended
 			// check if Uris are the same
 			if ($strCurrentUri != $strCanonicalUri)
 			{
-				// insert canonical tag
-				$GLOBALS['TL_HEAD'][] = '<link rel="canonical" href="'.$strCanonicalUri.'">';
+				$addCanonical = true;
+
+				if (($GLOBALS['objPage']->enableCanonical ?? false) && method_exists(System::class, 'getContainer'))
+				{
+					$container = System::getContainer();
+
+					if ($container->has('contao.routing.response_context_accessor'))
+					{
+						/** @var ResponseContext $responseContext */
+						$responseContext = $container->get('contao.routing.response_context_accessor')->getResponseContext();
+
+						if ($responseContext->has(HtmlHeadBag::class))
+						{
+							/** @var HtmlHeadBag $htmlHeadBag */
+							$htmlHeadBag = $responseContext->get(HtmlHeadBag::class);
+							$htmlHeadBag->setCanonicalUri($strCanonicalUri);
+							$addCanonical = false;
+						}
+					}
+				}
+
+				if ($addCanonical)
+				{
+					// insert canonical tag
+					$GLOBALS['TL_HEAD'][] = '<link rel="canonical" href="'.$strCanonicalUri.'">';
+				}
 			}
 
 			// don't do anything else
