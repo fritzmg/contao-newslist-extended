@@ -21,6 +21,7 @@ use Contao\Environment;
 use Contao\FilesModel;
 use Contao\FrontendTemplate;
 use Contao\Module;
+use Contao\News;
 use Contao\NewsModel;
 use Contao\PageModel;
 use Contao\StringUtil;
@@ -73,7 +74,8 @@ class NewslistExtended
 			$strCurrentUri = Environment::get('uri');
 
 			// get the canonical uri
-			$strCanonicalUri = (strpos($objTemplate->link, 'http') !== 0 ? Environment::get('base') : '') . $objTemplate->link;
+			$strCanonicalUri = News::generateNewsUrl(NewsModel::findById($arrArticle['id']));
+			$strCanonicalUri = (strpos($strCanonicalUri, 'http') !== 0 ? Environment::get('base') : '') . $strCanonicalUri;
 
 			// check if Uris are the same
 			if ($strCurrentUri != $strCanonicalUri)
