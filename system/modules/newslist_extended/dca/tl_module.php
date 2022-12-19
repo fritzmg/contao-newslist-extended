@@ -12,6 +12,7 @@
  */
 
 use Contao\CoreBundle\DataContainer\PaletteManipulator;
+use Contao\CoreBundle\EventListener\ImageSizeOptionsListener;
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'news_overrideRedirect';
 
@@ -33,6 +34,11 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['news_overrideRedirect'] = array
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['imgSize_featured'] = $GLOBALS['TL_DCA']['tl_module']['fields']['imgSize'];
+
+if (class_exists(ImageSizeOptionsListener::class)) {
+	$GLOBALS['TL_DCA']['tl_module']['fields']['imgSize_featured']['options_callback'] = ['contao.listener.image_size_options', '__invoke'];
+}
+
 $GLOBALS['TL_DCA']['tl_module']['fields']['imgSize_featured']['label'] = &$GLOBALS['TL_LANG']['tl_module']['imgSize_featured'];
 
 if (class_exists(PaletteManipulator::class)) {
