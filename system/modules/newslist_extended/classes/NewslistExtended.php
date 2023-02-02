@@ -77,8 +77,7 @@ class NewslistExtended
 			$strCurrentUri = Environment::get('uri');
 
 			// get the canonical uri
-			$strCanonicalUri = News::generateNewsUrl(NewsModel::findById($arrArticle['id']));
-			$strCanonicalUri = (strpos($strCanonicalUri, 'http') !== 0 ? Environment::get('base') : '') . $strCanonicalUri;
+			$strCanonicalUri = News::generateNewsUrl(NewsModel::findById($arrArticle['id']), false, true);
 
 			// check if Uris are the same
 			if ($strCurrentUri != $strCanonicalUri)
