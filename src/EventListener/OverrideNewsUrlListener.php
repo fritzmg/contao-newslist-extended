@@ -87,7 +87,7 @@ class OverrideNewsUrlListener
          && $module->jumpTo
          && null !== ($target = PageModel::findById($module->jumpTo))) {
             // build the href
-            $href = $target->getFrontendUrl('/'.$newsEntry['alias']);
+            $href = $target->getFrontendUrl('/'.($newsEntry['alias'] ?: $newsEntry['id']));
 
             // encode href
             $href = StringUtil::ampersand($href);
