@@ -3,13 +3,10 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Contao Newslist Extended extension.
- *
- * (c) inspiredminds
- *
- * @license LGPL-3.0-or-later
+ * (c) INSPIRED MINDS
  */
 
+use Contao\CoreBundle\ContaoCoreBundle;
 use Contao\CoreBundle\DataContainer\PaletteManipulator;
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'news_overrideRedirect';
@@ -51,3 +48,17 @@ PaletteManipulator::create()
     ->addField('excludeCurrentNews', 'config_legend', PaletteManipulator::POSITION_APPEND)
     ->applyToPalette('newslist', 'tl_module')
 ;
+
+if (version_compare(ContaoCoreBundle::getVersion(), '5.3', '<')) {
+    $GLOBALS['TL_DCA']['tl_module']['fields']['news_keepCanonical'] = [
+        'exclude' => true,
+        'inputType' => 'checkbox',
+        'eval' => ['tl_class' => 'w50 clr'],
+        'sql' => ['type' => 'boolean', 'default' => 0],
+    ];
+
+    PaletteManipulator::create()
+        ->addField('news_keepCanonical', 'config_legend', PaletteManipulator::POSITION_APPEND)
+        ->applyToPalette('newsreader', 'tl_module')
+    ;
+}

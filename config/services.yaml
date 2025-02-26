@@ -5,6 +5,4 @@ services:
     
     InspiredMinds\ContaoNewslistExtended\:
         resource: ../src
-
-    InspiredMinds\ContaoNewslistExtended\EventListener\ExcludeCurrentNewsListener:
-        tags: [{name: kernel.event_listener, event: InspiredMinds\ContaoNewsFilterEvent\Event\NewsFilterEvent}]
+        exclude: ../src/{ContaoManager,DependencyInjection,ContaoNewslistExtendedBundle.php}

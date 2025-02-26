@@ -3,18 +3,15 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Contao Newslist Extended extension.
- *
- * (c) inspiredminds
- *
- * @license LGPL-3.0-or-later
+ * (c) INSPIRED MINDS
  */
 
 namespace InspiredMinds\ContaoNewslistExtended\EventListener;
 
+use Contao\CoreBundle\ContaoCoreBundle;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Contao\CoreBundle\Routing\ResponseContext\HtmlHeadBag\HtmlHeadBag;
 use Contao\CoreBundle\Routing\ResponseContext\ResponseContextAccessor;
-use Contao\CoreBundle\ServiceAnnotation\Hook;
 use Contao\FrontendTemplate;
 use Contao\Module;
 use Contao\News;
@@ -25,18 +22,14 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Overrides the news link if applicable.
- *
- * @Hook("parseArticles", priority=10)
  */
+#[AsHook('parseArticles', priority: 10)]
 class OverrideNewsUrlListener
 {
-    private RequestStack $requestStack;
-    private ResponseContextAccessor $responseContextAccessor;
-
-    public function __construct(RequestStack $requestStack, ResponseContextAccessor $responseContextAccessor)
-    {
-        $this->requestStack = $requestStack;
-        $this->responseContextAccessor = $responseContextAccessor;
+    public function __construct(
+        private readonly RequestStack $requestStack,
+        private readonly ResponseContextAccessor $responseContextAccessor,
+    ) {
     }
 
     public function __invoke(FrontendTemplate $template, array $newsEntry, Module $module): void
@@ -49,7 +42,7 @@ class OverrideNewsUrlListener
         $request = $this->requestStack->getCurrentRequest();
 
         // check if this is the newsreader
-        if ('newsreader' === $module->type) {
+        if ('newsreader' === $module->type && !$module->news_keepCanonical && version_compare(ContaoCoreBundle::getVersion(), '5.3', '<')) {
             // get the current uri
             $currentUri = $request->getUri();
 
@@ -82,10 +75,12 @@ class OverrideNewsUrlListener
         }
 
         // check if a custom redirect page is set and the article has no redirects on its own
-        if ('default' === $newsEntry['source']
+        if (
+            'default' === $newsEntry['source']
          && $module->news_overrideRedirect
          && $module->jumpTo
-         && null !== ($target = PageModel::findById($module->jumpTo))) {
+         && null !== ($target = PageModel::findById($module->jumpTo))
+        ) {
             // build the href
             $href = $target->getFrontendUrl('/'.($newsEntry['alias'] ?: $newsEntry['id']));
 
@@ -115,9 +110,9 @@ class OverrideNewsUrlListener
      */
     private function generateNewsLink($href, $title, $text, $isReadMore = false)
     {
-        return sprintf('<a href="%s" title="%s" itemprop="url">%s%s</a>',
+        return \sprintf('<a href="%s" title="%s" itemprop="url">%s%s</a>',
             $href,
-            StringUtil::specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['readMore'], $title), true),
+            StringUtil::specialchars(\sprintf($GLOBALS['TL_LANG']['MSC']['readMore'], $title), true),
             $text,
             $isReadMore ? ' <span class="invisible">'.$title.'</span>' : '');
     }

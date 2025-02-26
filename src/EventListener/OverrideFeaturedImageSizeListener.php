@@ -3,32 +3,23 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Contao Newslist Extended extension.
- *
- * (c) inspiredminds
- *
- * @license LGPL-3.0-or-later
+ * (c) INSPIRED MINDS
  */
 
 namespace InspiredMinds\ContaoNewslistExtended\EventListener;
 
+use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Contao\CoreBundle\Image\Studio\Studio;
-use Contao\CoreBundle\ServiceAnnotation\Hook;
 use Contao\FrontendTemplate;
 use Contao\Module;
 use Contao\NewsModel;
 use Contao\StringUtil;
 
-/**
- * @Hook("parseArticles")
- */
+#[AsHook('parseArticles')]
 class OverrideFeaturedImageSizeListener
 {
-    private Studio $studio;
-
-    public function __construct(Studio $studio)
+    public function __construct(private readonly Studio $studio)
     {
-        $this->studio = $studio;
     }
 
     public function __invoke(FrontendTemplate $template, array $newsEntry, Module $module): void
@@ -39,7 +30,7 @@ class OverrideFeaturedImageSizeListener
 
         $size = StringUtil::deserialize($module->imgSize_featured, true);
 
-        if (empty(array_filter($size))) {
+        if ([] === array_filter($size)) {
             return;
         }
 
@@ -57,10 +48,10 @@ class OverrideFeaturedImageSizeListener
             $figureBuilder->setLinkAttribute('target', '_blank');
         }
 
-        if (null !== ($figure = $figureBuilder->buildIfResourceExists())) {
+        if ($figure = $figureBuilder->buildIfResourceExists()) {
             // Rebuild with link to news article if none is set
             if (!$figure->getLinkHref()) {
-                $linkTitle = StringUtil::specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['readMore'], $news->headline), true);
+                $linkTitle = StringUtil::specialchars(\sprintf($GLOBALS['TL_LANG']['MSC']['readMore'], $news->headline), true);
 
                 $figure = $figureBuilder
                     ->setLinkHref($template->link)

@@ -3,11 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Contao Newslist Extended extension.
- *
- * (c) inspiredminds
- *
- * @license LGPL-3.0-or-later
+ * (c) INSPIRED MINDS
  */
 
 namespace InspiredMinds\ContaoNewslistExtended\EventListener;
@@ -15,7 +11,9 @@ namespace InspiredMinds\ContaoNewslistExtended\EventListener;
 use Contao\Input;
 use Contao\NewsModel;
 use InspiredMinds\ContaoNewsFilterEvent\Event\NewsFilterEvent;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
+#[AsEventListener]
 class ExcludeCurrentNewsListener
 {
     public function __invoke(NewsFilterEvent $event): void
