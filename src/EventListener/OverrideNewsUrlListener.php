@@ -74,12 +74,20 @@ class OverrideNewsUrlListener
             return;
         }
 
+        $newsOverrideRedirect = $module->news_overrideRedirect;
+        $jumpTo = $module->jumpTo;
+
+        if ($module->newsFilterElement?->news_overrideRedirect) {
+            $newsOverrideRedirect = $module->newsFilterElement->news_overrideRedirect;
+            $jumpTo = $module->newsFilterElement->jumpTo;
+        }
+
         // check if a custom redirect page is set and the article has no redirects on its own
         if (
             'default' === $newsEntry['source']
-         && $module->news_overrideRedirect
-         && $module->jumpTo
-         && null !== ($target = PageModel::findById($module->jumpTo))
+         && $newsOverrideRedirect
+         && $jumpTo
+         && null !== ($target = PageModel::findById($jumpTo))
         ) {
             // build the href
             $href = $target->getFrontendUrl('/'.($newsEntry['alias'] ?: $newsEntry['id']));
