@@ -33,4 +33,5 @@ if (class_exists(\Codefog\NewsCategoriesBundle\ContentElement\NewsFilterElement:
     }
     $GLOBALS['TL_DCA']['tl_content']['palettes']['__selector__'][] = 'news_overrideRedirect';
     $GLOBALS['TL_DCA']['tl_content']['subpalettes']['news_overrideRedirect'] = 'jumpTo';
+    $GLOBALS['TL_DCA']['tl_content']['fields']['news_overrideRedirect']['eval']['submitOnChange'] = true;
 }
